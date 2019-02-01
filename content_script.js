@@ -11,6 +11,7 @@ function highligtSelection(event) {
 
 function highlightRange(range) {
     var newNode = document.createElement("span");
+    var p = document.querySelector("p");
     newNode.setAttribute(
        "style",
        "background-color: yellow;"
