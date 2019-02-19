@@ -1,12 +1,12 @@
 function highligtSelection(event) {
     var userSelection = window.getSelection();
-    
-	for(var highligtNumber = 0; highligtNumber < userSelection.rangeCount; highligtNumber++) {
-		var node = highlightRange(userSelection.getRangeAt(highligtNumber));
-		var range = userSelection.getRangeAt(highligtNumber);
-		range.deleteContents();
-		range.insertNode(node);
-	}
+
+    for(var highligtNumber = 0; highligtNumber < userSelection.rangeCount; highligtNumber++) {
+        var node = highlightRange(userSelection.getRangeAt(highligtNumber));
+        var range = userSelection.getRangeAt(highligtNumber);
+        range.deleteContents();
+        range.insertNode(node);
+    }
 }
 
 function highlightRange(range) {
@@ -30,7 +30,7 @@ function callhighligtSelection(event) {
 document.addEventListener("keydown", callhighligtSelection);
 
 var colorWell;
-var defaultColor = "#0000ff";
+var defaultColor = "#ffff00";
 
 window.addEventListener("load", startup, false);
 

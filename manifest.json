@@ -7,19 +7,18 @@
   "icons": {
     "64": "icons/icons8-marker-pen-64.png"
   },
-    "options_ui": {
-      "page": "switcher.html",
-      "browser_style": true
-    },
-    "browser_action": {
+  "background": {
+    "scripts": ["js/background.js"]
+  },
+  "browser_action": {
       "default_icon": {
         "64": "icons/icons8-marker-pen-64-y.png"
       },
       "default_title": "Highlight color"
-    },
+  },
   "content_scripts": [
     {
-		"matches": ["<all_urls>"],
+	"matches": ["<all_urls>"],
       	"js": ["js/content_script.js"]
     }
   ]

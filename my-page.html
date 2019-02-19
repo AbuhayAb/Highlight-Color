@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    </head>
+<body>
+    <h1>Highlight color!</h1>
+    <div>
+        <h3>color pickr:</h3>
+        <p>
+            <label class="container">yellow
+                <input  name="color" type="radio" id="yellow">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">Green
+                <input type="radio" name="color" id="green">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">Red
+                <input name="color"  type="radio" id="red">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container" style="display:inline-block;"> else
+                <input name="color"  type="radio"  id="custom">
+                <span class="checkmark"></span>
+            </label>
+            <input id="html5picker" onchange="clickColor(0, -1, -1, 5)" value="#d926d9" type="color">
+            <script>
+                let buttons = document.querySelectorAll("[name=color]");
+                for (let i=0; i<buttons.length; i++)) {
+                    buttons[i].addEventListener("change", function(evt) => {
+                        console.log(evt);
+                        if (this.checked) {
+                            buttons[i].setAttribute('checked', 'checked');
+                        } else {
+                            buttons[i].removeAttribute('checked');
+                        }
+                    });
+                }
+            </script>
+        </p>
+    </div>
+    <div>
+        <h3>Shortcuts pickr:</h3>
+    </div>
+    <div>
+        <h3>About:</h3>
+        <p>a project for Large softhware</p>
+    </div>
+</body>
+
+</html>

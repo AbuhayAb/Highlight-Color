@@ -8,22 +8,26 @@
 
 <body>
     <div id ="container"> color pickr:
-        <table>
-             <tbody>
-                <tr>
-                    <td style="cursor:pointer;background-color:#d92626;width:50px;" onclick="clickColor(#d92626)"></td>
-                    <td style="cursor:pointer;background-color:#2626d9;width:50px;" onclick="clickColor(#2626d9)"></td>
-                    <td style="cursor:pointer;background-color:#26d926;width:50px;" onclick="clickColor(#26d926)"></td>
-                    <td style="cursor:pointer;background-color:#d9d926;width:50px;" onclick="clickColor(#d9d926)"></td>
-                    <td>
-                        <input id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#d926d9"  type="color"></td>
-                </tr>
-            </tbody>
-       </table>
-    </div>
-    <div id ="chooseDefColor"> chooseDefColor : 
-                        <input id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#d926d9"  type="color">
+
+<label class="container">yellow
+  <input type="radio" checked="checked" name="radio">
+  <span class="checkmark"></span>
+</label>
+<label class="container">Green
+  <input type="radio" name="radio">
+  <span class="checkmark"></span>
+</label>
+<label class="container">Red
+  <input type="radio" name="radio">
+  <span class="checkmark"></span>
+</label>
+<label class="container" style="display:inline-block;">  
+  <input type="radio" name="radio">
+  <span class="checkmark"></span>
+</label><input id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#d926d9" type="color">
 </div>
     <script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
+
+
