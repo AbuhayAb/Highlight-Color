@@ -4,12 +4,15 @@
     "description": "Highlight color",
     "version": "0.0.1",
     "homepage_url": "https://github.com/chuck26/Highlight-Color",
-    "permissions": ["storage"],
+	"permissions": [
+	    "storage",
+	    "<all_urls>"
+	],
     "icons": {
         "64": "icons/icons8-marker-pen-64.png"
     },
     "background": {
-        "scripts": ["js/background.js"]
+        "scripts": ["js/background.js", "js/save.js", "js/content_script.js"]
     },
     "browser_action": {
         "default_icon": {

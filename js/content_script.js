@@ -30,8 +30,8 @@ function callhighligtSelection(event) {
 document.addEventListener("keydown", callhighligtSelection);
 
 var colorWell;
-var defaultColor = localStorage.color
-var defaultShortcut = localStorage.shortcut
+var defaultColor = '#ffff00';
+var defaultShortcut = 'h';
 
 window.addEventListener("load", startup, false);
 
@@ -40,6 +40,16 @@ function startup() {
   colorWell = document.querySelectorAll("td");
   colorWell.addEventListener("click", updateFirst, false);
   colorWell.addEventListener("change", updateFirst, false);
+    if (localStorage.color === undefined) {
+        defaultColor = '#ffff00';
+    } else {
+        defaultColor = localStorage.color;     
+    }
+    if (localStorage.shortcut === undefined) {
+        defaultShortcut = 'h';
+    } else {
+        defaultShortcut = localStorage.shortcut;     
+    }
 }
 
 function updateFirst(event) {
