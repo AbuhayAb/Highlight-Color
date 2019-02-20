@@ -5,48 +5,42 @@
     </head>
 <body>
     <h1>Highlight color!</h1>
+<section>
     <div>
         <h3>color pickr:</h3>
         <p>
             <label class="container">yellow
-                <input  name="color" type="radio" id="yellow">
-                <span class="checkmark"></span>
+                <input  name="color" type="radio" value="#ffff00" checked="checked">
             </label>
             <label class="container">Green
-                <input type="radio" name="color" id="green">
-                <span class="checkmark"></span>
+                <input type="radio" name="color" value="#00ff00">
             </label>
             <label class="container">Red
-                <input name="color"  type="radio" id="red">
-                <span class="checkmark"></span>
+                <input name="color"  type="radio" value="#ff0000">
             </label>
-            <label class="container" style="display:inline-block;"> else
-                <input name="color"  type="radio"  id="custom">
-                <span class="checkmark"></span>
+            <label class="container" style="display:inline-block;"> 
+                <pre>else: </pre>
+                <input name="color"  type="radio" value="">
             </label>
-            <input id="html5picker" onchange="clickColor(0, -1, -1, 5)" value="#d926d9" type="color">
-            <script>
-                let buttons = document.querySelectorAll("[name=color]");
-                for (let i=0; i<buttons.length; i++)) {
-                    buttons[i].addEventListener("change", function(evt) => {
-                        console.log(evt);
-                        if (this.checked) {
-                            buttons[i].setAttribute('checked', 'checked');
-                        } else {
-                            buttons[i].removeAttribute('checked');
-                        }
-                    });
-                }
-            </script>
+            <input id="favcolor" value="#00E4FF" type="color">
         </p>
     </div>
     <div>
-        <h3>Shortcuts pickr:</h3>
+        <h3>Shortcuts pickr: One char</h3>
+        <input id="shortcut" value="h" type="text" name= "shortcut" required
+       minlength="1" maxlength="1" size="1" pattern="[A-Za-z]">
     </div>
     <div>
         <h3>About:</h3>
         <p>a project for Large softhware</p>
     </div>
+    <div>
+        <input type="button" id="submit" value="Save" />
+        <input id="clear" type="button" value="Clear" />
+    </div>
+</section>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/save.js"></script>
 </body>
 
 </html>

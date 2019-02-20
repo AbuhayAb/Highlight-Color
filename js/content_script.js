@@ -22,7 +22,7 @@ function highlightRange(range) {
 }
 
 function callhighligtSelection(event) {
-	 if (event.key.toUpperCase() == 'H') {
+	 if (event.key == defaultShortcut) {
 	    highligtSelection(event);
 	  }
 }
@@ -30,7 +30,8 @@ function callhighligtSelection(event) {
 document.addEventListener("keydown", callhighligtSelection);
 
 var colorWell;
-var defaultColor = "#ffff00";
+var defaultColor = localStorage.color
+var defaultShortcut = localStorage.shortcut
 
 window.addEventListener("load", startup, false);
 

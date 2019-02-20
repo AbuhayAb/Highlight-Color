@@ -1,25 +1,26 @@
 {
-  "manifest_version": 2,
-  "name": "HighlightColor",
-  "description": "Highlight color",
-  "version": "0.0.1",
-  "homepage_url": "https://github.com/chuck26/Highlight-Color",
-  "icons": {
-    "64": "icons/icons8-marker-pen-64.png"
-  },
-  "background": {
-    "scripts": ["js/background.js"]
-  },
-  "browser_action": {
-      "default_icon": {
-        "64": "icons/icons8-marker-pen-64-y.png"
-      },
-      "default_title": "Highlight color"
-  },
-  "content_scripts": [
-    {
-	"matches": ["<all_urls>"],
-      	"js": ["js/content_script.js"]
-    }
-  ]
+    "manifest_version": 2,
+    "name": "HighlightColor",
+    "description": "Highlight color",
+    "version": "0.0.1",
+    "homepage_url": "https://github.com/chuck26/Highlight-Color",
+    "permissions": ["storage"],
+    "icons": {
+        "64": "icons/icons8-marker-pen-64.png"
+    },
+    "background": {
+        "scripts": ["js/background.js"]
+    },
+    "browser_action": {
+        "default_icon": {
+            "64": "icons/icons8-marker-pen-64-y.png"
+        },
+        "default_title": "Highlight color"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["js/content_script.js"]
+        }
+    ]
 }
