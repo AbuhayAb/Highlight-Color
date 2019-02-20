@@ -1,6 +1,6 @@
 body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #dashboard-nav {
@@ -22,7 +22,7 @@ body {
     white-space: nowrap;
 }
 
->span {
+> span {
     align-items: center;
     display: inline-flex;
     padding: 0 0.5em;
@@ -37,9 +37,9 @@ body {
 .tabButton {
     background-color: #eee;
     border: 1px solid #ccc;
-        border-bottom-color: rgb(204, 204, 204);
-        border-bottom-style: solid;
-        border-bottom-width: 1px;
+    border-bottom-color: rgb(204, 204, 204);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom: 1px solid #ccc;

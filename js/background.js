@@ -2,9 +2,9 @@
 Open a new tab, and load "my-page.html" into it.
 */
 function openMyPage() {
-   browser.tabs.create({
-     "url": "../my-page.html"
-   });
+    browser.tabs.create({
+        "url": "../my-page.html"
+    });
 }
 
 

@@ -3,9 +3,10 @@ function setSettings() {
         try {
 
             color = $("input[name='color']:checked").val();
-            color = color == '' ? $("#favcolor").val() : color;
-        
-            
+            if (color == '') {
+                color = $("#favcolor").val();
+            }
+
             localStorage.color = color;
             shortcut = $("#shortcut").val();
             localStorage.shortcut = shortcut;
@@ -22,14 +23,14 @@ function setSettings() {
 
 function applySetting() {
 
-    if (!!localStorage['color']) {
+    if (localStorage.color === undefined) {
         localStorage.color = '#00E4FF';
     }
 
-    if (!!localStorage['shortcut']) {
+    if (localStorage.shortcut === undefined) {
         localStorage.shortcut = 'h';
     }
-    
+
     switch (localStorage.color) {
         case "#ffff00":
         case "#00ff00":
@@ -40,7 +41,7 @@ function applySetting() {
             $("input[value='']").prop("checked", true);
             break;
     }
-    
+
     $("#favcolor").val(localStorage.color);
     $("#shortcut").val(localStorage.shortcut);
 
@@ -48,11 +49,10 @@ function applySetting() {
 
 function clearSettings() {
     localStorage.removeItem("favcolor");
-    localStorage.removeItem("shortcut");    
+    localStorage.removeItem("shortcut");
     applySetting();
 }
 
 applySetting();
 $("#clear").click(clearSettings);
 $("#submit").click(setSettings);
-window.addEventListener("storage", displayStorageEvent, true);
