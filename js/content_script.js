@@ -1,17 +1,19 @@
-function highligtSelection(event) {
-    var userSelection = window.getSelection();
+function highlightSelection(event) {
+    const userSelection = window.getSelection();
 
-    for (var highligtNumber = 0; highligtNumber < userSelection.rangeCount; highligtNumber++) {
-        var node = highlightRange(userSelection.getRangeAt(highligtNumber));
-        var range = userSelection.getRangeAt(highligtNumber);
+    for (let highlightNumber = 0; highlightNumber < userSelection.rangeCount; highlightNumber++) {
+        const node = highlightRange(userSelection.getRangeAt(highlightNumber));
+        const range = userSelection.getRangeAt(highlightNumber);
         range.deleteContents();
         range.insertNode(node);
     }
 }
 
+let defaultColor;
+
 function highlightRange(range) {
-    var newNode = document.createElement("span");
-    var p = document.querySelector("p");
+    const newNode = document.createElement("span");
+    const p = document.querySelector("p");
     newNode.setAttribute(
         "style",
         "background-color:" + defaultColor + ";"
@@ -21,20 +23,21 @@ function highlightRange(range) {
     return newNode;
 }
 
-function callhighligtSelection(event) {
-    if (event.key == defaultShortcut) {
-        highligtSelection(event);
+let defaultShortcut;
+
+function callHighlightSelection(event) {
+    if (event.key === defaultShortcut) {
+        highlightSelection(event);
     }
 }
 
-document.addEventListener("keydown", callhighligtSelection);
+document.addEventListener("keydown", callHighlightSelection);
 
-var colorWell;
-var defaultColor = '#ffff00';
-var defaultShortcut = 'h';
+let colorWell;
+defaultColor = '#ffff00';
+defaultShortcut = 'h';
 
 window.addEventListener("load", startup, false);
-
 
 function startup() {
     colorWell = document.querySelectorAll("td");
@@ -59,4 +62,3 @@ function updateFirst(event) {
         defaultColor = event.target.value;
     }
 }
-

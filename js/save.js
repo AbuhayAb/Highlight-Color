@@ -1,10 +1,12 @@
 function setSettings() {
+    let color;
+    let shortcut;
     if ('localStorage' in window && window['localStorage'] !== null) {
         try {
 
             color = $("input[name='color']:checked").val();
-            if (color == '') {
-                color = $("#favcolor").val();
+            if (color === '') {
+                color = $("#chooseColor").val();
             }
 
             localStorage.color = color;
@@ -42,7 +44,7 @@ function applySetting() {
             break;
     }
 
-    $("#favcolor").val(localStorage.color);
+    $("#chooseColor").val(localStorage.color);
     $("#shortcut").val(localStorage.shortcut);
 
 }
