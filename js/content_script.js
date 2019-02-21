@@ -60,5 +60,3 @@ function reloadSettings(callback) {
         });
 }
 
-
-// window.addEventListener("load", updateFirst, true);

@@ -23,7 +23,7 @@ function error(error) {
 function applySetting(settings) {
 
     if (settings.color === undefined) {
-        settings.color = '#00E4FF';
+        settings.color = '#ffff00';
     }
 
     if (settings.shortcut === undefined) {
