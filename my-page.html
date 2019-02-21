@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Highlight</title>
-    <link rel="stylesheet" href="css/app.css"></link>
+    <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
 <h1>Highlight color!</h1>
@@ -31,7 +31,7 @@
         </p>
 	</div>
 	<div>
-		<h3>Shortcuts picker: One char</h3>
+		<h3>Shortcuts picker:</h3>
 		<input id="shortcut" value="h" type="text" name="shortcut" required
 		       minlength="1" maxlength="1" size="1" pattern="[A-Za-z]">
 	</div>
@@ -40,9 +40,13 @@
 		<p>a project for Large software</p>
 	</div>
 	<div>
-		<input type="button" id="submit" value="Save"/>
-		<input id="clear" type="button" value="Clear"/>
-	</div>
+        <label class="containerButton">
+		    <input type="button" id="submit" value="Save"/>
+        </label>
+        <label class="containerButton">
+            <input id="clear" type="button" value="Clear"/>
+        </label>
+    </div>
 </section>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/save.js"></script>

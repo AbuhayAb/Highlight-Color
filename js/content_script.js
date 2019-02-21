@@ -15,7 +15,6 @@ function highlightSelection() {
 
 function highlightRange(range) {
     var newNode = document.createElement("span");
-    p = document.querySelector("p");
     newNode.setAttribute(
         "style",
         "background-color:" + currentColor + ";"
@@ -40,7 +39,7 @@ reloadSettings(null);
 function reloadSettings(callback) {
 
     browser.storage.sync.get().then(
-        function(settings) {
+        function (settings) {
 
             if (settings.color !== undefined) {
                 currentColor = settings.color;
@@ -55,7 +54,7 @@ function reloadSettings(callback) {
             }
         },
 
-        function(error) {
+        function (error) {
             console.log(error);
         });
 }
