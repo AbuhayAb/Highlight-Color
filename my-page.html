@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Highlight</title>
+    <link rel="stylesheet" href="css/app.css"></link>
 </head>
 <body>
 <h1>Highlight color!</h1>
@@ -12,19 +13,22 @@
 		<p>
 			<label class="container">yellow
 				<input name="color" type="radio" value="#ffff00" checked="checked">
+                <span class="checkmark"></span>
 			</label>
 			<label class="container">Green
 				<input type="radio" name="color" value="#00ff00">
+                <span class="checkmark"></span>
 			</label>
 			<label class="container">Red
 				<input name="color" type="radio" value="#ff0000">
+                <span class="checkmark"></span>
 			</label>
 			<label class="container" style="display:inline-block;">
-				<pre>else: </pre>
-				<input name="color" type="radio" value="">
-			</label>
-			<input id="favcolor" value="#00E4FF" type="color">
-		</p>
+                <input name="color" type="radio" value="">
+                <input id="chooseColor" value="#00E4FF" type="color">
+                <span class="checkmark"></span>
+            </label>
+        </p>
 	</div>
 	<div>
 		<h3>Shortcuts picker: One char</h3>

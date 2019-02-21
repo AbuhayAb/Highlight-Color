@@ -1,64 +1,64 @@
-function highlightSelection(event) {
-    const userSelection = window.getSelection();
+function highlightSelection() {
 
-    for (let highlightNumber = 0; highlightNumber < userSelection.rangeCount; highlightNumber++) {
-        const node = highlightRange(userSelection.getRangeAt(highlightNumber));
-        const range = userSelection.getRangeAt(highlightNumber);
-        range.deleteContents();
-        range.insertNode(node);
-    }
+    reloadSettings(function() {
+        var userSelection = window.getSelection();
+        var range;
+        for (var highlightNumber = 0; highlightNumber < userSelection.rangeCount; highlightNumber++) {
+            var node = highlightRange(userSelection.getRangeAt(highlightNumber));
+            range = userSelection.getRangeAt(highlightNumber);
+            range.deleteContents();
+            range.insertNode(node);
+        }
+    });
 }
 
-let defaultColor;
 
 function highlightRange(range) {
-    const newNode = document.createElement("span");
-    const p = document.querySelector("p");
+    var newNode = document.createElement("span");
+    p = document.querySelector("p");
     newNode.setAttribute(
         "style",
-        "background-color:" + defaultColor + ";"
+        "background-color:" + currentColor + ";"
     );
 
     newNode.appendChild(range.cloneContents());
     return newNode;
 }
 
-let defaultShortcut;
-
 function callHighlightSelection(event) {
-    if (event.key === defaultShortcut) {
+    if (event.key === currentShortcut) {
         highlightSelection(event);
     }
 }
 
 document.addEventListener("keydown", callHighlightSelection);
 
-let colorWell;
-defaultColor = '#ffff00';
-defaultShortcut = 'h';
+var currentColor = '#ffff00';
+var currentShortcut = 'h';
 
-window.addEventListener("load", startup, false);
+reloadSettings(null);
+function reloadSettings(callback) {
 
-function startup() {
-    colorWell = document.querySelectorAll("td");
-    colorWell.addEventListener("click", updateFirst, false);
-    colorWell.addEventListener("change", updateFirst, false);
-    if (localStorage.color === undefined) {
-        defaultColor = '#ffff00';
-    } else {
-        defaultColor = localStorage.color;
-    }
-    if (localStorage.shortcut === undefined) {
-        defaultShortcut = 'h';
-    } else {
-        defaultShortcut = localStorage.shortcut;
-    }
+    browser.storage.sync.get().then(
+        function(settings) {
+
+            if (settings.color !== undefined) {
+                currentColor = settings.color;
+            }
+
+            if (settings.shortcut !== undefined) {
+                currentShortcut = settings.shortcut;
+            }
+
+            if (callback !== null) {
+                callback();
+            }
+        },
+
+        function(error) {
+            console.log(error);
+        });
 }
 
-function updateFirst(event) {
-    var p = document.querySelector("td");
 
-    if (p) {
-        defaultColor = event.target.value;
-    }
-}
+// window.addEventListener("load", updateFirst, true);

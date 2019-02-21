@@ -5,17 +5,14 @@
   "version": "0.0.1",
   "homepage_url": "https://github.com/chuck26/Highlight-Color",
   "permissions": [
-    "storage",
-    "<all_urls>"
+    "storage"
   ],
   "icons": {
     "64": "icons/icons8-marker-pen-64.png"
   },
   "background": {
     "scripts": [
-      "js/background.js",
-      "js/save.js",
-      "js/content_script.js"
+      "js/background.js"
     ]
   },
   "browser_action": {
@@ -33,5 +30,6 @@
         "js/content_script.js"
       ]
     }
-  ]
+  ],
+  "browser_specific_settings": { "gecko": {"id": "thisappid@dontforgettochange.com"} }
 }

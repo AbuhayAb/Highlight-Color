@@ -1,60 +1,58 @@
 function setSettings() {
-    let color;
-    let shortcut;
-    if ('localStorage' in window && window['localStorage'] !== null) {
-        try {
 
-            color = $("input[name='color']:checked").val();
-            if (color === '') {
-                color = $("#chooseColor").val();
-            }
-
-            localStorage.color = color;
-            shortcut = $("#shortcut").val();
-            localStorage.shortcut = shortcut;
-            applySetting();
-        } catch (e) {
-            if (e == QUOTA_EXCEEDED_ERR) {
-                alert('Quota exceeded!');
-            }
-        }
-    } else {
-        alert('Cannot store user storage');
+    selectedColor = $("input[name='color']:checked").val();
+    if (selectedColor === '') {
+        selectedColor = $("#chooseColor").val();
     }
+
+    shortcutValue = $("#shortcut").val();
+
+    browser.storage.sync.set({
+        color: selectedColor,
+        shortcut: shortcutValue
+    }).then(function() {
+        browser.storage.sync.get().then(applySetting, error);
+    }, error);
+
 }
 
-function applySetting() {
+function error(error) {
+    console.log(error);
+}
 
-    if (localStorage.color === undefined) {
-        localStorage.color = '#00E4FF';
+function applySetting(settings) {
+
+    if (settings.color === undefined) {
+        settings.color = '#00E4FF';
     }
 
-    if (localStorage.shortcut === undefined) {
-        localStorage.shortcut = 'h';
+    if (settings.shortcut === undefined) {
+        settings.shortcut = 'h';
     }
 
-    switch (localStorage.color) {
+    switch (settings.color) {
         case "#ffff00":
         case "#00ff00":
         case "#ff0000":
-            $("input[value='" + localStorage.color + "']").prop("checked", true);
+            $("input[value='" + settings.color + "']").prop("checked", true);
             break;
         default:
             $("input[value='']").prop("checked", true);
             break;
     }
 
-    $("#chooseColor").val(localStorage.color);
-    $("#shortcut").val(localStorage.shortcut);
+    $("#chooseColor").val(settings.color);
+    $("#shortcut").val(settings.shortcut);
 
 }
 
 function clearSettings() {
-    localStorage.removeItem("favcolor");
-    localStorage.removeItem("shortcut");
-    applySetting();
+    browser.storage.sync.set({
+        color: undefined,
+        shortcut: undefined
+    }).then(applySetting, error);
 }
 
-applySetting();
+browser.storage.sync.get().then(applySetting, error);
 $("#clear").click(clearSettings);
 $("#submit").click(setSettings);
