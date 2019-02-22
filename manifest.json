@@ -2,16 +2,16 @@
   "manifest_version": 2,
   "name": "HighlightColor",
   "description": "Highlight color",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage_url": "https://github.com/chuck26/Highlight-Color",
   "permissions": [
     "storage"
   ],
   "icons": {
-    "16": "icons/64-marker-pen.svg",
-    "24": "icons/64-marker-pen,svg",
-    "48": "icons/64-marker-pen.svg",
-    "64": "icons/64-marker-pen.svg"
+    "16": "icons/64-marker.svg",
+    "24": "icons/64-marker.svg",
+    "48": "icons/64-marker.svg",
+    "64": "icons/64-marker.svg"
 
   },
   "background": {
@@ -21,10 +21,10 @@
   },
   "browser_action": {
     "default_icon": {
-      "16": "icons/64-marker-pen.svg",
-      "24": "icons/64-marker-pen.svg",
-      "48": "icons/64-marker-pen.svg",
-      "64": "icons/64-marker-pen.svg"
+      "16": "icons/64-marker.svg",
+      "24": "icons/64-marker.svg",
+      "48": "icons/64-marker.svg",
+      "64": "icons/64-marker.svg"
     },
     "default_title": "Highlight color"
   },
