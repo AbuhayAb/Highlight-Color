@@ -5,3 +5,5 @@ dist-*
 *.iml
 *.zip
 .goutputstream-*
+icons/64-marker1.svg
+
