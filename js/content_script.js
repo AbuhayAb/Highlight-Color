@@ -35,9 +35,16 @@ function callHighlightSelection(event) {
 
 document.addEventListener("keydown", callHighlightSelection);
 
+/*
+Default settings. Initialize storage to these values.
+ */
 var currentColor = '#ffff00';
 var currentShortcut = 'h';
 
+/*
+On startup, check whether we have stored settings.
+If we don't, then store the default settings.
+*/
 reloadSettings(null);
 
 function reloadSettings(callback) {

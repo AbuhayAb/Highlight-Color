@@ -13,12 +13,12 @@ function setSettings() {
     browser.storage.sync.set({
         color: selectedColor,
         shortcut: shortcutValue
-    }).then(getItemFromStorageArea, onError);
+    }).then(gettingStoredSettings, onError);
 
 }
-
-function onError(error) {
-    console.log(error);
+// Generic error logger.
+function onError(e) {
+    console.log(e);
 }
 
 function applySetting(settings) {
@@ -49,11 +49,17 @@ function clearSettings() {
         shortcut: undefined
     }).then(applySetting, onError);
 }
-function getItemFromStorageArea(){
+function gettingStoredSettings(){
     browser.storage.sync.get().then(applySetting, onError);
 }
 
-getItemFromStorageArea();
+gettingStoredSettings();
+
+/**
+ * Handle update and reset button clicks
+ */
+// document.querySelector('#clear').addEventListener('click', clearSettings)
+// document.querySelector('#update').addEventListener('click', setSettings)
 
 $("#clear").click(clearSettings);
-$("#submit").click(setSettings);
+$("#update").click(setSettings);
