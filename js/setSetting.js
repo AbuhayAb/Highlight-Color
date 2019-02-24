@@ -1,16 +1,19 @@
 function setSettings() {
 
-    selectedColor = $("input[name='color']:checked").val();
+    // var selectedColor = document.querySelector("input[name='color']:checked").value;
+    var selectedColor = $("input[name='color']:checked").val();
     if (selectedColor === '') {
+        // selectedColor = document.querySelector("#chooseColor").val();
         selectedColor = $("#chooseColor").val();
+
     }
 
-    shortcutValue = $("#shortcut").val();
+    var shortcutValue = $("#shortcut").val();
 
     browser.storage.sync.set({
         color: selectedColor,
         shortcut: shortcutValue
-    }).then(getItemFromStorgeArea, onError);
+    }).then(getItemFromStorageArea, onError);
 
 }
 
@@ -19,7 +22,7 @@ function onError(error) {
 }
 
 function applySetting(settings) {
-
+    console.log("here");
     if (settings.color === undefined) {
         settings.color = '#ffff00';
     }
@@ -29,9 +32,11 @@ function applySetting(settings) {
     }
 
     if (settings.color === "#ffff00" || settings.color === "#00ff00" || settings.color === "#ff0000") {
-        $("input[value='" + settings.color + "']").prop("checked", true);
+        // document.querySelector("input[value='" + settings.color + "']").checked;
+        $("input[value='" + settings.color + "']").prop("checked");
     } else {
-        $("input[value='']").prop("checked", true);
+        // document.querySelector("input[value='']").checked;
+        $("input[value='']").prop("checked");
     }
 
     $("#chooseColor").val(settings.color);
@@ -45,11 +50,11 @@ function clearSettings() {
         shortcut: undefined
     }).then(applySetting, onError);
 }
-function getItemFromStorgeArea(){
+function getItemFromStorageArea(){
     browser.storage.sync.get().then(applySetting, onError);
 }
 
-getItemFromStorgeArea();
+getItemFromStorageArea();
 
 $("#clear").click(clearSettings);
 $("#submit").click(setSettings);
