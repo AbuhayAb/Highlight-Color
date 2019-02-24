@@ -37,7 +37,7 @@
     }
   },
   "options_ui": {
-    "page": "my-page.html",
+    "page": "setting-page.html",
     "open_in_tab": true
   }
 }
