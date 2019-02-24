@@ -22,7 +22,6 @@ function onError(error) {
 }
 
 function applySetting(settings) {
-    console.log("here");
     if (settings.color === undefined) {
         settings.color = '#ffff00';
     }
@@ -33,10 +32,10 @@ function applySetting(settings) {
 
     if (settings.color === "#ffff00" || settings.color === "#00ff00" || settings.color === "#ff0000") {
         // document.querySelector("input[value='" + settings.color + "']").checked;
-        $("input[value='" + settings.color + "']").prop("checked");
+        $("input[value='" + settings.color + "']").prop("checked", true);
     } else {
         // document.querySelector("input[value='']").checked;
-        $("input[value='']").prop("checked");
+        $("input[value='']").prop("checked", true);
     }
 
     $("#chooseColor").val(settings.color);
