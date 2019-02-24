@@ -1,5 +1,5 @@
 /*
-Open a new tab, and load "my-page.html" into it.
+Open a new tab, and load "setting-page.html" into it.
 */
 function openMyPage() {
     browser.tabs.create({
