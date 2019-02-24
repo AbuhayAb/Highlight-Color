@@ -1,27 +1,30 @@
 function highlightSelection() {
 
-    reloadSettings(function() {
-        var userSelection = window.getSelection();
-        var range;
-        for (var highlightNumber = 0; highlightNumber < userSelection.rangeCount; highlightNumber++) {
-            var node = highlightRange(userSelection.getRangeAt(highlightNumber));
-            range = userSelection.getRangeAt(highlightNumber);
-            range.deleteContents();
-            range.insertNode(node);
+    reloadSettings(function () {
+        var selectionObj = window.getSelection();
+        var selectRange;
+        for (var indexSelect = 0; indexSelect < selectionObj.rangeCount; indexSelect++) {
+            var node = addNewNodeToSelectRange(selectionObj.getRangeAt(indexSelect));
+            selectRange = selectionObj.getRangeAt(indexSelect);
+            selectRange.deleteContents();
+            selectRange.insertNode(node);
         }
     });
 }
 
 
-function highlightRange(range) {
-    var newNode = document.createElement("span");
-    newNode.setAttribute(
+function addNewNodeToSelectRange(range) {
+
+    var newNodeWithBackgroundColor = document.createElement("span");
+    newNodeWithBackgroundColor.setAttribute(
         "style",
-        "background-color:" + currentColor + ";"
+        "background-color:" + currentColor +
+        ";position: relative;"
     );
 
-    newNode.appendChild(range.cloneContents());
-    return newNode;
+    newNodeWithBackgroundColor.appendChild(range.cloneContents());
+
+    return newNodeWithBackgroundColor;
 }
 
 function callHighlightSelection(event) {
@@ -36,8 +39,10 @@ var currentColor = '#ffff00';
 var currentShortcut = 'h';
 
 reloadSettings(null);
+
 function reloadSettings(callback) {
 
+    //get one or more items from the storage area.
     browser.storage.sync.get().then(
         function (settings) {
 
@@ -58,4 +63,3 @@ function reloadSettings(callback) {
             console.log(error);
         });
 }
-

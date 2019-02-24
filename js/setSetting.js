@@ -10,13 +10,11 @@ function setSettings() {
     browser.storage.sync.set({
         color: selectedColor,
         shortcut: shortcutValue
-    }).then(function() {
-        browser.storage.sync.get().then(applySetting, error);
-    }, error);
+    }).then(getItemFromStorgeArea, onError);
 
 }
 
-function error(error) {
+function onError(error) {
     console.log(error);
 }
 
@@ -30,15 +28,10 @@ function applySetting(settings) {
         settings.shortcut = 'h';
     }
 
-    switch (settings.color) {
-        case "#ffff00":
-        case "#00ff00":
-        case "#ff0000":
-            $("input[value='" + settings.color + "']").prop("checked", true);
-            break;
-        default:
-            $("input[value='']").prop("checked", true);
-            break;
+    if (settings.color === "#ffff00" || settings.color === "#00ff00" || settings.color === "#ff0000") {
+        $("input[value='" + settings.color + "']").prop("checked", true);
+    } else {
+        $("input[value='']").prop("checked", true);
     }
 
     $("#chooseColor").val(settings.color);
@@ -50,9 +43,13 @@ function clearSettings() {
     browser.storage.sync.set({
         color: undefined,
         shortcut: undefined
-    }).then(applySetting, error);
+    }).then(applySetting, onError);
+}
+function getItemFromStorgeArea(){
+    browser.storage.sync.get().then(applySetting, onError);
 }
 
-browser.storage.sync.get().then(applySetting, error);
+getItemFromStorgeArea();
+
 $("#clear").click(clearSettings);
 $("#submit").click(setSettings);
