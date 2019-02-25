@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "HighlightColor",
   "description": "Highlight color",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "homepage_url": "https://github.com/chuck26/Highlight-Color",
   "permissions": [
     "storage"

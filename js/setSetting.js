@@ -16,6 +16,7 @@ function setSettings() {
     }).then(gettingStoredSettings, onError);
 
 }
+
 // Generic error logger.
 function onError(e) {
     console.log(e);
@@ -49,7 +50,8 @@ function clearSettings() {
         shortcut: undefined
     }).then(applySetting, onError);
 }
-function gettingStoredSettings(){
+
+function gettingStoredSettings() {
     browser.storage.sync.get().then(applySetting, onError);
 }
 

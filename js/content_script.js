@@ -1,14 +1,9 @@
-/*
-    source: https://stackoverflow.com/questions/304837/javascript-user-selection-highlighting
- */
-
+//source: https://stackoverflow.com/questions/304837/javascript-user-selection-highlighting
 function getSafeRanges(dangerous) {
     var commonAncestorContainer = dangerous.commonAncestorContainer;
-    // Starts -- Work in ward from the start, selecting the largest safe range
+    var newRange;
     var containerNodeFromStart = new Array(0);
     var containerNodeFromStartSafe = new Array(0);
-    var newRange;
-    // Ends -- basically the same code reversed
     var containerNodeFromEnd = new Array(0);
     var containerNodeFromEndSafe = new Array(0);
 
@@ -29,6 +24,7 @@ function getSafeRanges(dangerous) {
 
     newRange = document.createRange();
     newRange.setStart(containerNodeFromStart[0], dangerous.startOffset);
+
     var isSameNodeTypeStart = containerNodeFromStart[0].nodeType === Node.TEXT_NODE;
     newRange.setEndAfter(isSameNodeTypeStart ? containerNodeFromStart[0] : containerNodeFromStart[0].lastChild);
     containerNodeFromStartSafe.push(newRange);
@@ -76,30 +72,22 @@ function highlightSelection() {
 
     reloadSettings(function () {
         var selectionObj = window.getSelection().getRangeAt(0);
-        var safeRange = getSafeRanges(selectionObj);
+        var containerNodeSafe = getSafeRanges(selectionObj);
         var selectRange;
-        for (var indexSelect = 0; indexSelect < safeRange.length; indexSelect++) {
-            var node = addNewNodeToSelectRange(safeRange[indexSelect]);
-            selectRange = safeRange[indexSelect];
+        for (var startNode = 0; startNode < containerNodeSafe.length; startNode++) {
+            var node = addNewNodeToSelectRange(containerNodeSafe[startNode]);
+            selectRange = containerNodeSafe[startNode];
             selectRange.deleteContents();
             selectRange.insertNode(node);
         }
     });
 }
 
-// function removehighlightSelection(nodeToRemove) {
-//     // var contants = document.createTextNode(nodeToRemove.innerHTML);
-//     // nodeToRemove.parentNode.replaceChild(nodeToRemove.cloneContents(), nodeToRemove);
-//     console.log(nodeToRemove);
-// }
 
 function addNewNodeToSelectRange(range) {
 
-    // console.log(range);
-
     var newNodeWithBackgroundColor = document.createElement("span");
     newNodeWithBackgroundColor.style = "background-color:" + currentColor + ";";
-    // newNodeWithBackgroundColor.onselect ="removehighlightSelection(range);";
 
     newNodeWithBackgroundColor.appendChild(range.cloneContents());
 
@@ -113,10 +101,8 @@ function callHighlightSelection(event) {
 }
 
 document.addEventListener("keydown", callHighlightSelection);
-// document.addEventListener("onselect", removehighlightSelection);
-/*
-Default settings. Initialize storage to these values.
- */
+
+//Default settings. Initialize storage to these values.
 var currentColor = '#ffff00';
 var currentShortcut = 'h';
 
