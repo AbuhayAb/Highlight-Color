@@ -1,84 +1,26 @@
-//source: https://stackoverflow.com/questions/304837/javascript-user-selection-highlighting
-function getSafeRanges(dangerous) {
-    var commonAncestorContainer = dangerous.commonAncestorContainer;
-    var newRange;
-    var containerNodeFromStart = new Array(0);
-    var containerNodeFromStartSafe = new Array(0);
-    var containerNodeFromEnd = new Array(0);
-    var containerNodeFromEndSafe = new Array(0);
-
-    for (var startContainer = dangerous.startContainer;
-         startContainer !== commonAncestorContainer; startContainer = startContainer.parentNode) {
-        containerNodeFromStart.push(startContainer);
+function getTextNode(content) {
+    var treeWalker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
+    var containerNodSelects = [];
+    while (treeWalker.nextNode()) {
+        containerNodSelects.push(treeWalker.currentNode);
     }
-
-
-    for (var endContainer = dangerous.endContainer;
-         endContainer !== commonAncestorContainer; endContainer = endContainer.parentNode) {
-        containerNodeFromEnd.push(endContainer);
-    }
-
-    if (!containerNodeFromStart.length || !containerNodeFromEnd.length) {
-        return [dangerous];
-    }
-
-    newRange = document.createRange();
-    newRange.setStart(containerNodeFromStart[0], dangerous.startOffset);
-
-    var isSameNodeTypeStart = containerNodeFromStart[0].nodeType === Node.TEXT_NODE;
-    newRange.setEndAfter(isSameNodeTypeStart ? containerNodeFromStart[0] : containerNodeFromStart[0].lastChild);
-    containerNodeFromStartSafe.push(newRange);
-
-    for (var i = 1; i < containerNodeFromStart.length; i++) {
-        newRange = document.createRange();
-        newRange.setStartAfter(containerNodeFromStart[i - 1]);
-        newRange.setEndAfter(containerNodeFromStart[i].lastChild);
-
-        containerNodeFromStartSafe.push(newRange);
-    }
-
-    newRange = document.createRange();
-    var isSameNodeTypeEnd = containerNodeFromEnd[0].nodeType === Node.TEXT_NODE;
-
-    newRange.setStartBefore(isSameNodeTypeEnd ? containerNodeFromEnd[0] : containerNodeFromEnd[0].firstChild);
-    newRange.setEnd(containerNodeFromEnd[0], dangerous.endOffset);
-    containerNodeFromEndSafe.unshift(newRange);
-
-    for (var index = 1; index < containerNodeFromEnd.length; index++) {
-        newRange = document.createRange();
-
-        newRange.setStartBefore(containerNodeFromEnd[index].firstChild);
-        newRange.setEndBefore(containerNodeFromEnd[index - 1]);
-
-
-        containerNodeFromEndSafe.unshift(newRange);
-    }
-
-    // the unCaptured middle
-    newRange = document.createRange();
-    newRange.setStartAfter(containerNodeFromStart[containerNodeFromStart.length - 1]);
-    newRange.setEndBefore(containerNodeFromEnd[containerNodeFromEnd.length - 1]);
-
-
-    // Concat
-    containerNodeFromStartSafe.push(newRange);
-    response = containerNodeFromStartSafe.concat(containerNodeFromEndSafe);
-
-    // Send to Console
-    return response;
+    return containerNodSelects;
 }
 
 function highlightSelection() {
 
     reloadSettings(function () {
-        var selectionObj = window.getSelection().getRangeAt(0);
-        var containerNodeSafe = getSafeRanges(selectionObj);
+        var content = window.getSelection().getRangeAt(0).startContainer;
+
+        var containerNodSelects = getTextNode(content);
         var selectRange;
-        for (var startNode = 0; startNode < containerNodeSafe.length; startNode++) {
-            var node = addNewNodeToSelectRange(containerNodeSafe[startNode]);
-            selectRange = containerNodeSafe[startNode];
-            selectRange.deleteContents();
-            selectRange.insertNode(node);
+        for (var startNode = 0; startNode < containerNodSelects.length; startNode++) {
+            // if (containerNodeSafe[startNode].endOffset === 0){
+            var node = addNewNodeToSelectRange(containerNodSelects[startNode]);
+            selectRange = containerNodSelects[startNode];
+            selectRange.parentNode.replaceChild(node, selectRange);
+            // selectRange.insertNode(node);
+            // }
         }
     });
 }
@@ -87,9 +29,10 @@ function highlightSelection() {
 function addNewNodeToSelectRange(range) {
 
     var newNodeWithBackgroundColor = document.createElement("span");
-    newNodeWithBackgroundColor.style = "background-color:" + currentColor + ";";
+    newNodeWithBackgroundColor.style.backgroundColor = currentColor;
+    newNodeWithBackgroundColor.style.color = "black";
 
-    newNodeWithBackgroundColor.appendChild(range.cloneContents());
+    newNodeWithBackgroundColor.appendChild(range.cloneNode(true));
 
     return newNodeWithBackgroundColor;
 }
