@@ -5,70 +5,68 @@
 function getSafeRanges(dangerous) {
     var commonAncestorContainer = dangerous.commonAncestorContainer;
     // Starts -- Work in ward from the start, selecting the largest safe range
-    var containerSelectedFromStart = new Array(0);
-    var rangesSafe = new Array(0);
-
-    for (var container = dangerous.startContainer;
-         container !== commonAncestorContainer; container = container.parentNode) {
-        containerSelectedFromStart.push(container);
-    }
-
+    var containerNodeFromStart = new Array(0);
+    var containerNodeFromStartSafe = new Array(0);
     var newRange;
-    for (var i = 0; i < containerSelectedFromStart.length; i++) {
-        newRange = document.createRange();
-        if (i) {
-            newRange.setStartAfter(containerSelectedFromStart[i - 1]);
-            newRange.setEndAfter(containerSelectedFromStart[i].lastChild);
-        }
-        else {
-            newRange.setStart(containerSelectedFromStart[i], dangerous.startOffset);
-            newRange.setEndAfter(
-                (containerSelectedFromStart[i].nodeType === Node.TEXT_NODE) ?
-                    containerSelectedFromStart[i] : containerSelectedFromStart[i].lastChild);
-        }
-        rangesSafe.push(newRange);
-    }
-
-
     // Ends -- basically the same code reversed
-    var containerSelectedFromEnd = new Array(0);
-    var rangesSafeEnd = new Array(0);
+    var containerNodeFromEnd = new Array(0);
+    var containerNodeFromEndSafe = new Array(0);
 
-    for (var container = dangerous.endContainer;
-         container !== commonAncestorContainer; container = container.parentNode) {
-        containerSelectedFromEnd.push(container);
+    for (var startContainer = dangerous.startContainer;
+         startContainer !== commonAncestorContainer; startContainer = startContainer.parentNode) {
+        containerNodeFromStart.push(startContainer);
     }
 
-    for (var index = 0; index < containerSelectedFromEnd.length; index++) {
-        newRange = document.createRange();
-        if (index) {
-            newRange.setStartBefore(containerSelectedFromEnd[index].firstChild);
-            newRange.setEndBefore(containerSelectedFromEnd[index - 1]);
-        }
-        else {
-            newRange.setStartBefore(
-                (containerSelectedFromEnd[index].nodeType === Node.TEXT_NODE)
-                    ? containerSelectedFromEnd[index] : containerSelectedFromEnd[index].firstChild
-            );
-            newRange.setEnd(containerSelectedFromEnd[index], dangerous.endOffset);
-        }
-        rangesSafeEnd.unshift(newRange);
+
+    for (var endContainer = dangerous.endContainer;
+         endContainer !== commonAncestorContainer; endContainer = endContainer.parentNode) {
+        containerNodeFromEnd.push(endContainer);
     }
 
-    // Middle -- the unCaptured middle
-    if (!containerSelectedFromStart.length || !containerSelectedFromEnd.length) {
+    if (!containerNodeFromStart.length || !containerNodeFromEnd.length) {
         return [dangerous];
     }
 
+    newRange = document.createRange();
+    newRange.setStart(containerNodeFromStart[0], dangerous.startOffset);
+    var isSameNodeTypeStart = containerNodeFromStart[0].nodeType === Node.TEXT_NODE;
+    newRange.setEndAfter(isSameNodeTypeStart ? containerNodeFromStart[0] : containerNodeFromStart[0].lastChild);
+    containerNodeFromStartSafe.push(newRange);
+
+    for (var i = 1; i < containerNodeFromStart.length; i++) {
+        newRange = document.createRange();
+        newRange.setStartAfter(containerNodeFromStart[i - 1]);
+        newRange.setEndAfter(containerNodeFromStart[i].lastChild);
+
+        containerNodeFromStartSafe.push(newRange);
+    }
 
     newRange = document.createRange();
-    newRange.setStartAfter(containerSelectedFromStart[containerSelectedFromStart.length - 1]);
-    newRange.setEndBefore(containerSelectedFromEnd[containerSelectedFromEnd.length - 1]);
+    var isSameNodeTypeEnd = containerNodeFromEnd[0].nodeType === Node.TEXT_NODE;
+
+    newRange.setStartBefore(isSameNodeTypeEnd ? containerNodeFromEnd[0] : containerNodeFromEnd[0].firstChild);
+    newRange.setEnd(containerNodeFromEnd[0], dangerous.endOffset);
+    containerNodeFromEndSafe.unshift(newRange);
+
+    for (var index = 1; index < containerNodeFromEnd.length; index++) {
+        newRange = document.createRange();
+
+        newRange.setStartBefore(containerNodeFromEnd[index].firstChild);
+        newRange.setEndBefore(containerNodeFromEnd[index - 1]);
+
+
+        containerNodeFromEndSafe.unshift(newRange);
+    }
+
+    // the unCaptured middle
+    newRange = document.createRange();
+    newRange.setStartAfter(containerNodeFromStart[containerNodeFromStart.length - 1]);
+    newRange.setEndBefore(containerNodeFromEnd[containerNodeFromEnd.length - 1]);
 
 
     // Concat
-    rangesSafe.push(newRange);
-    response = rangesSafe.concat(rangesSafeEnd);
+    containerNodeFromStartSafe.push(newRange);
+    response = containerNodeFromStartSafe.concat(containerNodeFromEndSafe);
 
     // Send to Console
     return response;
