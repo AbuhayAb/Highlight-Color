@@ -1,97 +1,68 @@
-//source: https://stackoverflow.com/questions/304837/javascript-user-selection-highlighting
-function getSafeRanges(dangerous) {
-    var commonAncestorContainer = dangerous.commonAncestorContainer;
-    var newRange;
-    var containerNodeFromStart = new Array(0);
-    var containerNodeFromStartSafe = new Array(0);
-    var containerNodeFromEnd = new Array(0);
-    var containerNodeFromEndSafe = new Array(0);
+function getTextFromCommonAncestorNode() {
+    var range = window.getSelection().getRangeAt(0);
+    var treeWalker = document.createTreeWalker(
+        range.commonAncestorContainer,
+        NodeFilter.SHOW_TEXT,
+        {
+            acceptNode: function (node) {
+                if (range.isPointInRange(node, 0))
+                    return NodeFilter.FILTER_ACCEPT;
+            }
+        },
+        false
+    );
 
-    for (var startContainer = dangerous.startContainer;
-         startContainer !== commonAncestorContainer; startContainer = startContainer.parentNode) {
-        containerNodeFromStart.push(startContainer);
+    var node;
+    var nodes = [];
+    while (node = treeWalker.nextNode()) {
+        if (node.data.replace(/[\s]+/, "").length) {
+            nodes.push(node);
+        }
     }
 
-
-    for (var endContainer = dangerous.endContainer;
-         endContainer !== commonAncestorContainer; endContainer = endContainer.parentNode) {
-        containerNodeFromEnd.push(endContainer);
+    // if it si only one words
+    if (nodes.length === 0) {
+        var startNode = range.startContainer;
+        var startOffset = range.startOffset;
+        var endOffset = range.endOffset;
+        node = startNode.splitText(startOffset);
+        node.splitText(endOffset - startOffset);
+        nodes.push(node);
+        return nodes;
     }
 
-    if (!containerNodeFromStart.length || !containerNodeFromEnd.length) {
-        return [dangerous];
+    // for last word
+    if (!nodes.includes(range.endContainer)) {
+        nodes.push(range.endContainer);
+    }
+    //for first word
+    if (!nodes.includes(range.startContainer)) {
+        nodes.push(range.startContainer);
     }
 
-    newRange = document.createRange();
-    newRange.setStart(containerNodeFromStart[0], dangerous.startOffset);
+    return nodes;
 
-    var isSameNodeTypeStart = containerNodeFromStart[0].nodeType === Node.TEXT_NODE;
-    newRange.setEndAfter(isSameNodeTypeStart ? containerNodeFromStart[0] : containerNodeFromStart[0].lastChild);
-    containerNodeFromStartSafe.push(newRange);
-
-    for (var i = 1; i < containerNodeFromStart.length; i++) {
-        newRange = document.createRange();
-        newRange.setStartAfter(containerNodeFromStart[i - 1]);
-        newRange.setEndAfter(containerNodeFromStart[i].lastChild);
-
-        containerNodeFromStartSafe.push(newRange);
-    }
-
-    newRange = document.createRange();
-    var isSameNodeTypeEnd = containerNodeFromEnd[0].nodeType === Node.TEXT_NODE;
-
-    newRange.setStartBefore(isSameNodeTypeEnd ? containerNodeFromEnd[0] : containerNodeFromEnd[0].firstChild);
-    newRange.setEnd(containerNodeFromEnd[0], dangerous.endOffset);
-    containerNodeFromEndSafe.unshift(newRange);
-
-    for (var index = 1; index < containerNodeFromEnd.length; index++) {
-        newRange = document.createRange();
-
-        newRange.setStartBefore(containerNodeFromEnd[index].firstChild);
-        newRange.setEndBefore(containerNodeFromEnd[index - 1]);
-
-
-        containerNodeFromEndSafe.unshift(newRange);
-    }
-
-    // the unCaptured middle
-    newRange = document.createRange();
-    newRange.setStartAfter(containerNodeFromStart[containerNodeFromStart.length - 1]);
-    newRange.setEndBefore(containerNodeFromEnd[containerNodeFromEnd.length - 1]);
-
-
-    // Concat
-    containerNodeFromStartSafe.push(newRange);
-    response = containerNodeFromStartSafe.concat(containerNodeFromEndSafe);
-
-    // Send to Console
-    return response;
 }
 
 function highlightSelection() {
 
     reloadSettings(function () {
-        var selectionObj = window.getSelection().getRangeAt(0);
-        var containerNodeSafe = getSafeRanges(selectionObj);
-        var selectRange;
-        for (var startNode = 0; startNode < containerNodeSafe.length; startNode++) {
-            var node = addNewNodeToSelectRange(containerNodeSafe[startNode]);
-            selectRange = containerNodeSafe[startNode];
-            selectRange.deleteContents();
-            selectRange.insertNode(node);
-        }
+        var selectsTextNode = getTextFromCommonAncestorNode();
+
+        selectsTextNode.forEach(function (value) {
+            doSpan(value);
+        });
     });
 }
 
+function doSpan(range) {
 
-function addNewNodeToSelectRange(range) {
-
-    var newNodeWithBackgroundColor = document.createElement("span");
-    newNodeWithBackgroundColor.style = "background-color:" + currentColor + ";";
-
-    newNodeWithBackgroundColor.appendChild(range.cloneContents());
-
-    return newNodeWithBackgroundColor;
+    var span = document.createElement("span");
+    span.style.backgroundColor = currentColor;
+    span.style.color = "black";
+    var clone = range.cloneNode(true);
+    span.appendChild(clone);
+    range.parentNode.replaceChild(span, range);
 }
 
 function callHighlightSelection(event) {
