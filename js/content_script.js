@@ -1,77 +1,83 @@
+/**
+ * goes through all nodes from range.commonAncestorContainer in the document
+ * reduces the set in the acceptNode() method,
+ * only accept nodes that in the range and the node is not whitespace,
+ * and then makes use of tree walker iterator that is created to advance through the nodes (now all elements)
+ * and push them into an array nodeList
+ * @returns {Array}
+ */
 function getTextFromCommonAncestorNode() {
     var range = window.getSelection().getRangeAt(0);
     var treeWalker = document.createTreeWalker(
+        // Node to use as root
         range.commonAncestorContainer,
+        //Only consider nodes that are text nodes
         NodeFilter.SHOW_TEXT,
+        // Object containing the function to use for the acceptNode method of the NodeFilter
         {
             acceptNode: function (node) {
-                if (range.isPointInRange(node, 0))
+                // Logic to determine whether to accept, reject or skip node
+                // In this case, only accept nodes that in the range and the node is not whitespace
+                if (range.isPointInRange(node, 0) && node.data.replace(/[\s]+/, "").length > 0) {
                     return NodeFilter.FILTER_ACCEPT;
+                }
             }
         },
+        // flag indicating if when discarding an EntityReference its whole sub-tree
+        // must be discarded at the same time.
         false
     );
 
     var node;
-    var nodes = [];
-    while (node = treeWalker.nextNode()) {
-        if (node.data.replace(/[\s]+/, "").length) {
-            nodes.push(node);
-        }
-    }
+    var nodeList = [];
+    while (node = treeWalker.nextNode()) nodeList.push(node);
 
     // if it si only one words
-    if (nodes.length === 0) {
+    if (nodeList.length === 0) {
         var startNode = range.startContainer;
         var startOffset = range.startOffset;
         var endOffset = range.endOffset;
         node = startNode.splitText(startOffset);
         node.splitText(endOffset - startOffset);
-        nodes.push(node);
-        return nodes;
+        nodeList.push(node);
+        return nodeList;
     }
 
     // for last word
-    if (!nodes.includes(range.endContainer)) {
-        nodes.push(range.endContainer);
+    if (!nodeList.includes(range.endContainer)) {
+        nodeList.push(range.endContainer);
     }
     //for first word
-    if (!nodes.includes(range.startContainer)) {
-        nodes.push(range.startContainer);
+    if (!nodeList.includes(range.startContainer)) {
+        nodeList.push(range.startContainer);
     }
 
-    return nodes;
+    return nodeList;
 
 }
 
-function highlightSelection() {
-
-    reloadSettings(function () {
-        var selectsTextNode = getTextFromCommonAncestorNode();
-
-        selectsTextNode.forEach(function (value) {
-            doSpan(value);
-        });
-    });
+function makeHighlightSelection() {
+    var allNodeThatHaveTextInSelectionRange = getTextFromCommonAncestorNode();
+    allNodeThatHaveTextInSelectionRange.forEach(function (range) { doSpan(range); });
 }
 
-function doSpan(range) {
 
-    var span = document.createElement("span");
-    span.style.backgroundColor = currentColor;
-    span.style.color = "black";
-    var clone = range.cloneNode(true);
-    span.appendChild(clone);
-    range.parentNode.replaceChild(span, range);
+function doSpan(oldChild) {
+
+    var newChild = document.createElement("span");
+    newChild.style.backgroundColor = currentColor;
+    newChild.style.color = "black";
+    newChild.appendChild(oldChild.cloneNode(true));
+    oldChild.parentNode.replaceChild(newChild, oldChild);
 }
 
-function callHighlightSelection(event) {
+function highlightSelection(event) {
     if (event.key === currentShortcut) {
-        highlightSelection(event);
+        reloadSettings(makeHighlightSelection);
     }
 }
 
-document.addEventListener("keydown", callHighlightSelection);
+document.addEventListener("keydown", highlightSelection);
 
 //Default settings. Initialize storage to these values.
 var currentColor = '#ffff00';

@@ -9,7 +9,8 @@ function setSettings() {
     }
 
     var shortcutValue = $("#shortcut").val();
-
+    // Items in sync storage are synced by the browser,
+    // and are available across all instances of that browser that the user is logged into
     browser.storage.sync.set({
         color: selectedColor,
         shortcut: shortcutValue
