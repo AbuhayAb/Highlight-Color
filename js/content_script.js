@@ -70,6 +70,7 @@ function makeHighlightSelection() {
 function doSpan(oldChild) {
 
     var newChild = document.createElement("span");
+    newChild.setAttribute("style","all: unset");
     newChild.style.backgroundColor = currentColor;
     newChild.style.color = "black";
     newChild.className = "67111";
