@@ -72,6 +72,7 @@ function doSpan(oldChild) {
     var newChild = document.createElement("span");
     newChild.style.backgroundColor = currentColor;
     newChild.style.color = "black";
+    newChild.className = "67111";
     newChild.appendChild(oldChild.cloneNode(true));
     oldChild.parentNode.replaceChild(newChild, oldChild);
 }
