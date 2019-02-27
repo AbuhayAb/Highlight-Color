@@ -4,6 +4,7 @@
  * only accept nodes that in the range and the node is not whitespace,
  * and then makes use of tree walker iterator that is created to advance through the nodes (now all elements)
  * and push them into an array nodeList
+ * credit: https://stackoverflow.com/questions/10730309/find-all-text-nodes-in-html-page/10730777#10730777
  * @returns {Array}
  */
 function getTextFromCommonAncestorNode() {
