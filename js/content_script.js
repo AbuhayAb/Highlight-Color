@@ -7,8 +7,7 @@
  * credit: https://stackoverflow.com/questions/10730309/find-all-text-nodes-in-html-page/10730777#10730777
  * @returns {Array}
  */
-function getTextFromCommonAncestorNode() {
-    var range = window.getSelection().getRangeAt(0);
+function getTextFromCommonAncestorNode(range) {
     var treeWalker = document.createTreeWalker(
         // Node to use as root
         range.commonAncestorContainer,
@@ -58,8 +57,13 @@ function getTextFromCommonAncestorNode() {
 }
 
 function makeHighlightSelection() {
-    var allNodeThatHaveTextInSelectionRange = getTextFromCommonAncestorNode();
-    allNodeThatHaveTextInSelectionRange.forEach(function (range) { doSpan(range); });
+    var selection = window.getSelection();
+    for (var i = 0; i < selection.rangeCount; i++) {
+        var allNodeThatHaveTextInSelectionRange = getTextFromCommonAncestorNode(selection.getRangeAt(i));
+        allNodeThatHaveTextInSelectionRange.forEach(function (range) {
+            doSpan(range);
+        });
+    }
 }
 
 
