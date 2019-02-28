@@ -69,11 +69,11 @@ function makeHighlightSelection() {
 
 function doSpan(oldChild) {
 
-    var newChild = document.createElement("span");
-    newChild.setAttribute("style","all: unset");
-    newChild.style.backgroundColor = currentColor;
+    var newChild = document.createElement("mark");
+    //newChild.setAttribute("style","all: unset");
+    newChild.style.background = currentColor;
     newChild.style.color = "black";
-    newChild.className = "67111";
+    //newChild.className = "67111";
     newChild.appendChild(oldChild.cloneNode(true));
     oldChild.parentNode.replaceChild(newChild, oldChild);
 }
