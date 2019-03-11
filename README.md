@@ -1,34 +1,10 @@
 # Highlight-Color
-A project for Large software course
+A project in web extensions - an extension that highlights the selected text in any web site, by clicking the "h" key or any other key, the color can be changed in the settings page in addon manager. 
 #Getting Started
-
-#Prerequisites
-
-
-#Installing
-
-#Running the tests
-
-#Break down into end to end tests
-
-
-#And coding style tests
-
-
-#Deployment
-
-#Built With
-
-
-
-#Contributing
-
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
-#Versioning
 
 #Authors
 
-    Abuhay Abune 
+ Abuhay Abune 
 
 #License
 
