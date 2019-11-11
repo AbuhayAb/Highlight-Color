@@ -1,5 +1,5 @@
 # Highlight-Color
-A project in web extensions - an extension that highlights the selected text in any web site, by clicking the "h" key or any other key, the color can be changed in the settings page in addon manager. 
+A project in web extensions - an extension that highlights the selected text in any website, by clicking the "h" key or any other key, the color can be changed in the settings page in addon manager. 
 
 
 ## Authors
