@@ -60,9 +60,18 @@ function makeHighlightSelection() {
     var selection = window.getSelection();
     for (var i = 0; i < selection.rangeCount; i++) {
         var allNodeThatHaveTextInSelectionRange = getTextFromCommonAncestorNode(selection.getRangeAt(i));
-        allNodeThatHaveTextInSelectionRange.forEach(function (range) {
-            doSpan(range);
-        });
+        
+        // If selection contains mark already, undo selection.
+        if ( allNodeThatHaveTextInSelectionRange.getElementsByTagName("MARK").length > 0 );
+        containsMark ) {
+            allNodeThatHaveTextInSelectionRange.forEach(function (range) {
+                undoSpan(range);
+            });
+        } else {
+            allNodeThatHaveTextInSelectionRange.forEach(function (range) {
+                doSpan(range);
+            });
+        }
     }
 }
 
@@ -75,6 +84,11 @@ function doSpan(oldChild) {
     newChild.style.color = "black";
     //newChild.className = "67111";
     newChild.appendChild(oldChild.cloneNode(true));
+    oldChild.parentNode.replaceChild(newChild, oldChild);
+}
+function undoSpan(oldChild) {
+    if ( oldChild.tagName != "MARK" ) return;
+    var newChild = oldChild.firstChild.cloneNode(true);
     oldChild.parentNode.replaceChild(newChild, oldChild);
 }
 
