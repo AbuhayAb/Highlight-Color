@@ -62,8 +62,12 @@ function makeHighlightSelection() {
         var allNodeThatHaveTextInSelectionRange = getTextFromCommonAncestorNode(selection.getRangeAt(i));
         
         // If selection contains mark already, undo selection.
-        if ( allNodeThatHaveTextInSelectionRange.getElementsByTagName("MARK").length > 0 );
-        containsMark ) {
+        var hasMarkerInSelection = false
+        allNodeThatHaveTextInSelectionRange.forEach(function (range) {
+            var markedElements = range.parentElement.getElementsByTagName("mark");
+            hasMarkerInSelection |= (markedElements != null) && (markedElements.length > 0);
+        });
+        if ( hasMarkerInSelection ) {
             allNodeThatHaveTextInSelectionRange.forEach(function (range) {
                 undoSpan(range);
             });
@@ -79,17 +83,19 @@ function makeHighlightSelection() {
 function doSpan(oldChild) {
 
     var newChild = document.createElement("mark");
-    //newChild.setAttribute("style","all: unset");
     newChild.style.background = currentColor;
     newChild.style.color = "black";
-    //newChild.className = "67111";
     newChild.appendChild(oldChild.cloneNode(true));
     oldChild.parentNode.replaceChild(newChild, oldChild);
 }
+
 function undoSpan(oldChild) {
-    if ( oldChild.tagName != "MARK" ) return;
-    var newChild = oldChild.firstChild.cloneNode(true);
-    oldChild.parentNode.replaceChild(newChild, oldChild);
+    var markedElements = oldChild.parentElement.getElementsByTagName("mark");
+    if ((markedElements == null) || (markedElements.length < 1)) return;
+    for (let elem of markedElements) {
+        //console.log("Element: " + elem.outerHTML);
+        elem.replaceWith(elem.innerHTML);
+    };
 }
 
 function highlightSelection(event) {
